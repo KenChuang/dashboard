@@ -268,8 +268,8 @@ export class DashboardComponent implements OnInit {
     // );
 
     this.energyJson = energyJson();
-    console.log('energyJson');
-    console.log(this.energyJson)
+    // console.log('energyJson');
+    // console.log(this.energyJson);
     this.powerConsumptionwithoutES = this.energyJson.Energy.PowerConsumptionwithoutES;
     this.energyMax = this.energyJson.Energy.TotalPowerMax;
     const startHour = Number(this.energyJson.Energy.TimeRange.StartHour);
