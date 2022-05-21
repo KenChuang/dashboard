@@ -361,8 +361,6 @@ export class DashboardComponent implements OnInit {
       });
     });
     this.slideBox();
-    // console.log(this.throughputUEsOfLable);
-    // console.log(this.throughputTDList);
   }
 
   // 跑馬燈
