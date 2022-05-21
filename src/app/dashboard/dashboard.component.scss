@@ -1,0 +1,122 @@
+
+h1 {
+    text-align: center;
+    margin: 0;
+    line-height: 2;
+    color: #fff;
+    font-family: Microsoft JhengHei;
+}
+h2 {
+    font-size: 1.5em;
+    font-family: Microsoft JhengHei;
+    text-align: center;
+    margin: 0.5em 0;
+}
+.wrapper {
+    background-color: #333;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+.row {
+    margin: 1% auto 0;
+    width: 98vw;
+}
+.row > span {
+    display: inline-block;
+    width: 47vw;
+    height: 50vh;
+    vertical-align: top;
+    border:1px solid #333;
+    background-color: #fff;
+    background-position: center;
+}
+.row > span {
+    margin: 0 1vw;
+}
+.map {
+    width: 96vw;
+    margin: 0 auto;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+table {
+    width: 94%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-family: Microsoft JhengHei;
+    background-color: #fff;
+}
+td {
+    border: 1px solid #ddd;
+    padding: .5em;
+    width: auto;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+th {
+    font-size: 1.1em;
+    font-weight: bold;
+
+    border: 1px solid #79a4e3;
+    padding: 0.5em;
+    width: 36%;
+    background-color: #d4ebf7;
+    color: #000;
+    text-align: right;
+}
+#arquee {
+    margin-right: 1vw;
+}
+#arquee .thead {
+    width: 100%;
+}
+#arquee .thead > span {
+    font-family: Microsoft JhengHei;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    width: 33.3%;
+    background-color: #d4ebf7;
+    border: 1px solid #79a4e3;
+    padding: 0.5em;
+    color: #000;
+    text-align: center;
+}
+#marquee {
+    max-height: 39vh;
+    overflow: auto;
+}
+#marquee div span {
+    font-family: Microsoft JhengHei;
+    width: 33.3%;
+    display: inline-block;
+    text-align: center;
+    font-size: 1.2em;
+    line-height: 2;
+
+}
+#marquee > div:nth-child(even) {
+    background-color: #eee;
+}
+.map {
+    border:1px solid #333
+}
+.Taffic > span {
+    vertical-align: top;
+    display: inline-block;
+    width: 60%;
+}
+.Taffic > span:last-child {
+    width: 40%;
+}
+.refreshTime {
+    position: absolute;
+    right: 2vw;
+    top: 1vh;
+    font-size: 0.8em;
+    font-weight: normal;
+    color: #8d8b8b;
+}
