@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
     this.startTimer();
   }
 
+  // 計時器
   startTimer() {
     let totalSecond = this.defaultMinTime * 60;
     this.refreshTime = `${addZero(Math.floor(totalSecond / 60))}: ${addZero(totalSecond % 60)}`;
@@ -126,31 +127,49 @@ export class DashboardComponent implements OnInit {
     //   res => {
     //     console.log('getField:');
     //     console.log(res);
-
     //     this.fieldJson = res;
-    //     this.BSnameMapFieldBS = new Map();
-    //     this.BSList = this.fieldJson.Field.BSList;
-    //     this.BSUEList = this.fieldJson.Field.BSUEList;
-    //     this.BSList.forEach((row, idx: number) => {
-    //       row.imgUrl = `assets/img/${this.filedImgs[idx]}.svg`;
-    //       this.BSnameMapFieldBS.set(row.BSname, row)
-    //     });
-    //     this.BSUEList.forEach((row: any, idx: number) => {
-    //       const BSname = row.BSname;
-    //       const FieldBS = this.BSnameMapFieldBS.get(BSname);
-    //       row.UEList.forEach((child: any) => {
-    //         child['color'] = this.lineColors[idx];
-    //         child['imgUrl'] = `assets/img/${this.BSUEListImg}.svg`;
-    //         child['BSLocX'] = FieldBS?.BSLocX;
-    //         child['BSLocY'] = FieldBS?.BSLocY;
-    //       });
-    //     });
-    //     console.log(this.BSList);
-    //     console.log(this.BSUEList);
+    //     this.fieldDataSetting();
     //   }
     // );
 
+    /* local file test */
     this.fieldJson = fieldJson();
+    this.fieldDataSetting();
+  }
+
+  getEnergyJson() {
+    // const url = 'http://211.20.94.210:8080/energy';
+    // this.http.get(url).subscribe(
+    //   res => {
+    //     console.log('getEnergyJson:');
+    //     console.log(res);
+    //     this.energyJson = res;
+    //     this.energyDataSetting();
+    //   }
+    // );
+
+    /* local file test */
+    this.energyJson = energyJson();
+    this.energyDataSetting();
+  }
+
+  getThroughputJson() {
+    // const url = 'http://211.20.94.210:8080/throughput';
+    // this.http.get(url).subscribe(
+    //   res => {
+    //     console.log('getThroughputJson:');
+    //     console.log(res);
+    //     this.throughputJson = res;
+    //     this.throughputDataSetting();
+    //   }
+    // );
+
+    /* local file test */
+    this.throughputJson = throughputJson();
+    this.throughputDataSetting();
+  }
+
+  fieldDataSetting() {
     this.BSnameMapFieldBS = new Map();
     this.BSList = this.fieldJson.Field.BSList;
     this.BSUEList = this.fieldJson.Field.BSUEList;
@@ -175,10 +194,9 @@ export class DashboardComponent implements OnInit {
       });
     });
     this.resizeFieldArea();
-    // console.log(this.BSList);
-    // console.log(this.BSUEList);
   }
 
+  // Auto Resize Field
   resizeFieldArea() {
     const fieldWidth = (document.getElementsByClassName('map')[0] as any).offsetWidth;
     const fieldHeight = (document.getElementsByClassName('map')[0] as any).offsetHeight;
@@ -196,80 +214,9 @@ export class DashboardComponent implements OnInit {
         child['UELocY'] = child['orgUELocY'] * _h;
       });
     });
-
   }
 
-  getEnergyJson() {
-    // const url = 'http://211.20.94.210:8080/energy';
-    // this.http.get(url).subscribe(
-    //   res => {
-    //     console.log('getEnergyJson:');
-    //     console.log(res);
-
-    //     this.energyJson = res;
-    //     this.powerConsumptionwithoutES = this.energyJson.Energy.PowerConsumptionwithoutES;
-    //     this.energyMax = this.energyJson.Energy.PowerConsumptionwithoutES;
-    //     const startHour = Number(this.energyJson.Energy.TimeRange.StartHour);
-    //     const startMin = Number(this.energyJson.Energy.TimeRange.StartMin);
-    //     const endHour = Number(this.energyJson.Energy.TimeRange.EndHour);
-    //     const endMin = Number(this.energyJson.Energy.TimeRange.EndMin);
-    //     const interval = Number(this.energyJson.Energy.TimeRange.Interval);
-    //     const endTotalMin = endHour * 60 + endMin;
-    //     const startTotalMin = startHour * 60 + startMin;
-    //     const range = (endTotalMin - startTotalMin) / interval;
-    //     const labels = [];
-    //     const datasets = [];
-    //     const powerConsumptionList = [];
-    //     for (let i = 0; i < interval + 1; i++) {
-    //       if (i === 0) {
-    //         labels.push(`${startHour}:${addZero(startMin)}`);
-    //       } else if (i === interval) {
-    //         labels.push(`${endHour}:${addZero(endMin)}`);
-    //       } else {
-    //         const newTotalMin = startTotalMin + range * i;
-    //         const newHour = Math.floor(newTotalMin / 60);
-    //         const newMin = Math.floor(newTotalMin % 60);
-    //         labels.push(`${newHour}:${addZero(newMin)}`);
-    //       }
-    //       powerConsumptionList.push(this.powerConsumptionwithoutES);
-    //     }
-    //     datasets[0] = {
-    //       label: 'Power Consumption(without ES)',
-    //       data: powerConsumptionList,
-    //       fill: this.fill,
-    //       borderColor: this.energyTotalPowerColor,
-    //       tension: this.tension
-    //     };
-    //     datasets[1] = {
-    //       label: 'Total Power Consumption',
-    //       data: this.energyJson.Energy.TotalPowerList,
-    //       fill: this.fill,
-    //       borderColor: this.energyColors[0],
-    //       tension: this.tension
-    //     };
-    //     this.energyJson.Energy.BSPowerList.forEach((row: any, idx: number) => {
-    //       datasets.push({
-    //         label: row['BSName'],
-    //         data: row['PowerList'],
-    //         fill: this.fill,
-    //         borderColor: this.energyColors[idx + 1],
-    //         tension: this.tension
-    //       });
-    //     });
-    //     this.energyData = {
-    //       labels: labels,
-    //       datasets: datasets
-    //     };
-    //     this.energyOptions = this.getEnergyOptions();
-    //     this.todayEnergyConsumption = this.energyJson.Energy.TodayEnergyConsumption;
-    //     this.energySaving = this.energyJson.Energy.EnergySaving;
-    //     this.energySavingRatio = this.energyJson.Energy.EnergySavingRatio;
-    //   }
-    // );
-
-    this.energyJson = energyJson();
-    // console.log('energyJson');
-    // console.log(this.energyJson);
+  energyDataSetting() {
     this.powerConsumptionwithoutES = this.energyJson.Energy.PowerConsumptionwithoutES;
     this.energyMax = this.energyJson.Energy.TotalPowerMax;
     const startHour = Number(this.energyJson.Energy.TimeRange.StartHour);
@@ -336,95 +283,7 @@ export class DashboardComponent implements OnInit {
     this.energySavingRatio = this.energyJson.Energy.EnergySavingRatio;
   }
 
-  getThroughputJson() {
-    // const url = 'http://211.20.94.210:8080/throughput';
-    // this.http.get(url).subscribe(
-    //   res => {
-    //     console.log('getThroughputJson:');
-    //     console.log(res);
-
-    //     this.throughputJson = res;
-    //     this.BSNameMapColor = new Map();
-    //     const startHour = Number(this.throughputJson.Throughput.TimeRange.StartHour);
-    //     const startMin = Number(this.throughputJson.Throughput.TimeRange.StartMin);
-    //     const endHour = Number(this.throughputJson.Throughput.TimeRange.EndHour);
-    //     const endMin = Number(this.throughputJson.Throughput.TimeRange.EndMin);
-    //     const interval = Number(this.throughputJson.Throughput.TimeRange.Interval);
-    //     const endTotalMin = endHour * 60 + endMin;
-    //     const startTotalMin = startHour * 60 + startMin;
-    //     const range = (endTotalMin - startTotalMin) / interval;
-    //     const labels = [];
-    //     const datasets = [];
-    //     for (let i = 0; i < interval + 1; i++) {
-    //       if (i === 0) {
-    //         labels.push(`${startHour}:${addZero(startMin)}`);
-    //       } else if (i === interval) {
-    //         labels.push(`${endHour}:${addZero(endMin)}`);
-    //       } else {
-    //         const newTotalMin = startTotalMin + range * i;
-    //         const newHour = Math.floor(newTotalMin / 60);
-    //         const newMin = Math.floor(newTotalMin % 60);
-    //         labels.push(`${newHour}:${addZero(newMin)}`);
-    //       }
-    //     }
-    //     datasets[0] = {
-    //       label: 'Total Throughput',
-    //       data: this.throughputJson.Throughput.TotalThrpList,
-    //       fill: this.fill,
-    //       borderColor: this.throughputColors[0],
-    //       tension: this.tension
-    //     };
-    //     this.throughputJson.Throughput.BSThrpList.forEach((row: any, idx: number) => {
-    //       const label = row['BSName'];
-    //       const color = this.throughputColors[idx + 1];
-    //       this.BSNameMapColor.set(label, color)
-    //       datasets.push({
-    //         label: label,
-    //         data: row['ThrpList'],
-    //         fill: this.fill,
-    //         borderColor: color,
-    //         tension: this.tension
-    //       });
-    //     });
-    //     this.throughputData = {
-    //       labels: labels,
-    //       datasets: datasets
-    //     };
-    //     this.throughputOptions = this.getThroughputOptions();
-
-    //     this.throughputTDList = [];
-    //     this.throughputUEsOfLable = [];
-    //     // 2X2 Array
-    //     let tdLen: number = 0;
-    //     if (this.throughputJson.Throughput.BSUEList.length > 0) {
-    //       tdLen = this.throughputJson.Throughput.BSUEList[0]['UEList'].length;
-    //     }
-    //     this.throughputTDList = [];
-    //     for (let i = 0; i < tdLen; i++) {
-    //       this.throughputTDList[i] = [];
-    //     }
-
-    //     this.throughputJson.Throughput.BSUEList.forEach((row: any) => {
-    //       const column = row['BSname'];
-    //       const color = this.BSNameMapColor.get(column);
-    //       row['UEList'].forEach((UE: string, idx: number) => {
-    //         this.throughputTDList[idx].push({
-    //           label: UE,
-    //           color: color as string
-    //         });
-    //       });
-    //       this.throughputUEsOfLable.push({
-    //         column: column,
-    //         color: color
-    //       });
-    //     });
-
-    //     console.log(this.throughputUEsOfLable);
-    //     console.log(this.throughputTDList);
-    //   }
-    // );
-
-    this.throughputJson = throughputJson();
+  throughputDataSetting() {
     this.BSNameMapColor = new Map();
     this.throughputMax = this.throughputJson.Throughput.BSThrpMax;
     const startHour = Number(this.throughputJson.Throughput.TimeRange.StartHour);
@@ -506,7 +365,7 @@ export class DashboardComponent implements OnInit {
     // console.log(this.throughputTDList);
   }
 
-  /* 跑馬燈 */
+  // 跑馬燈
   slideBox() {
     clearInterval(this.marquee_setInterval);
     const el = document.getElementById('marquee') as any;
@@ -658,30 +517,6 @@ export class DashboardComponent implements OnInit {
     }
     return rangeMapTrue;
   }
-
-  /* example */
-  // applyData() {
-  //   this.basicData = {
-  //     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  //     datasets: [
-  //       {
-  //         label: 'First Dataset',
-  //         data: [65, 59, 80, 81, 56, 55, 40],
-  //         fill: false,
-  //         borderColor: '#42A5F5',
-  //         tension: .4
-  //       },
-  //       {
-  //         label: 'Second Dataset',
-  //         data: [28, 48, 40, 19, 86, 27, 90],
-  //         fill: false,
-  //         borderColor: '#FFA726',
-  //         tension: .4
-  //       }
-  //     ]
-  //   };
-  // }
-
 }
 
 function addZero(num: number): string {
