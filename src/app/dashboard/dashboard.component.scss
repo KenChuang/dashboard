@@ -120,3 +120,20 @@ th {
     font-weight: normal;
     color: #8d8b8b;
 }
+
+@media only screen and (max-width:1600px) {
+    th {
+        width: 45%;
+    }
+}
+@media only screen and (max-width:1366px) {
+    #marquee {
+        max-height: 36vh;
+    }
+    p-chart[class="p-element"] {
+        height: 20vh!important;
+    }
+    td,th {
+        padding: 0.2em 0.5em;
+    }
+}
