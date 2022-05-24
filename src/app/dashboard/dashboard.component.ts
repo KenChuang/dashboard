@@ -367,6 +367,7 @@ export class DashboardComponent implements OnInit {
   slideBox() {
     clearInterval(this.marquee_setInterval);
     const el = document.getElementById('marquee') as any;
+    el.scrollTop = 0;
     let start: number = 0;
     let end: number = 0;
     this.marquee_setInterval = setInterval(() => {
@@ -721,12 +722,48 @@ function throughputJson() {
           "BSName": "BS1",
           "UEList": [
             "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
+            "UE2",
+            "UE1",
             "UE2"
           ]
         },
         {
           "BSName": "BS2",
           "UEList": [
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
+            "UE3",
+            "UE4",
             "UE3",
             "UE4"
           ]
