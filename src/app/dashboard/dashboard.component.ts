@@ -37,21 +37,21 @@ export class DashboardComponent implements OnInit {
   totalColor = '#1d70de';  // Energy、throughput total color
   // Filed
   enlarge = 50;
-  filedImgs = ['blue', 'red', 'yellow'];
+  filedImgs = ['blue', 'red', 'green', 'orange', 'coffee', 'pink', 'indigo', 'purple', 'lake', 'yellow'];
   BSUEListImg = 'icon_box';
-  filedWidth = 50;
-  filedHeight = 50;
+  filedWidth = 40;
+  filedHeight = 40;
   lineColors = [
     "#389de8",
     "#c93d7d",
     "#6bba42",
     "#dd854a",
-    "#f9bf30",
-    "#f784b0",
     "#895a2b",
+    "#f784b0",
     "#3c8c8c",
     "#ad78ea",
-    "#79e8d3"
+    "#79e8d3",
+    "#f9bf30"
   ];      // default多組顏色 [BS1, BS2, BS3 ,...]
   BSList: FieldBS[] = [];
   BSnameMapFieldBS: Map<string, FieldBS> = new Map();
