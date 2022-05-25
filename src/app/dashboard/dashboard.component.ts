@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.initData();
-    this.startTimer();
+    // this.startTimer();
   }
 
   // 計時器
@@ -122,51 +122,51 @@ export class DashboardComponent implements OnInit {
   }
 
   getField() {
-    const url = 'http://211.20.94.210:8080/field';
-    this.http.get(url).subscribe(
-      res => {
-        console.log('getField:');
-        console.log(res);
-        this.fieldJson = res;
-        this.fieldDataSetting();
-      }
-    );
+    // const url = 'http://211.20.94.210:8080/field';
+    // this.http.get(url).subscribe(
+    //   res => {
+    //     console.log('getField:');
+    //     console.log(res);
+    //     this.fieldJson = res;
+    //     this.fieldDataSetting();
+    //   }
+    // );
 
     /* local file test */
-    // this.fieldJson = fieldJson();
-    // this.fieldDataSetting();
+    this.fieldJson = fieldJson();
+    this.fieldDataSetting();
   }
 
   getEnergyJson() {
-    const url = 'http://211.20.94.210:8080/energy';
-    this.http.get(url).subscribe(
-      res => {
-        console.log('getEnergyJson:');
-        console.log(res);
-        this.energyJson = res;
-        this.energyDataSetting();
-      }
-    );
+    // const url = 'http://211.20.94.210:8080/energy';
+    // this.http.get(url).subscribe(
+    //   res => {
+    //     console.log('getEnergyJson:');
+    //     console.log(res);
+    //     this.energyJson = res;
+    //     this.energyDataSetting();
+    //   }
+    // );
 
     /* local file test */
-    // this.energyJson = energyJson();
-    // this.energyDataSetting();
+    this.energyJson = energyJson();
+    this.energyDataSetting();
   }
 
   getThroughputJson() {
-    const url = 'http://211.20.94.210:8080/throughput';
-    this.http.get(url).subscribe(
-      res => {
-        console.log('getThroughputJson:');
-        console.log(res);
-        this.throughputJson = res;
-        this.throughputDataSetting();
-      }
-    );
+    // const url = 'http://211.20.94.210:8080/throughput';
+    // this.http.get(url).subscribe(
+    //   res => {
+    //     console.log('getThroughputJson:');
+    //     console.log(res);
+    //     this.throughputJson = res;
+    //     this.throughputDataSetting();
+    //   }
+    // );
 
     /* local file test */
-    // this.throughputJson = throughputJson();
-    // this.throughputDataSetting();
+    this.throughputJson = throughputJson();
+    this.throughputDataSetting();
   }
 
   fieldDataSetting() {
@@ -339,7 +339,11 @@ export class DashboardComponent implements OnInit {
     // 2X2 Array
     let tdLen: number = 0;
     if (this.throughputJson.Throughput.BSUEList.length > 0) {
-      tdLen = this.throughputJson.Throughput.BSUEList[0]['UEList'].length;
+      const maxAry: number[] = [];
+      this.throughputJson.Throughput.BSUEList.forEach((row: any) => {
+        maxAry.push(row.UEList.length);
+      });
+      tdLen = _.max(maxAry) as number;
     }
     this.throughputTDList = [];
     for (let i = 0; i < tdLen; i++) {
@@ -349,18 +353,21 @@ export class DashboardComponent implements OnInit {
     this.throughputJson.Throughput.BSUEList.forEach((row: any) => {
       const column = row['BSName'];
       const color = this.BSNameMapColor.get(column);
-      row['UEList'].forEach((UE: string, idx: number) => {
-        this.throughputTDList[idx].push({
-          label: UE,
+      for (let i = 0; i < tdLen; i++) {
+        const UE = row['UEList'][i];
+        const label = (UE) ? UE : '';
+        this.throughputTDList[i].push({
+          label: label,
           color: color as string
         });
-      });
+      }
       this.throughputUEsOfLable.push({
         column: column,
         color: color
       });
     });
     this.slideBox();
+    console.log(this.throughputTDList);
   }
 
   // 跑馬燈
@@ -530,20 +537,56 @@ function addZero(num: number): string {
 function fieldJson() {
   return {
     "Field": {
-      "XMax": 40,
-      "YMax": 40,
+      "XMax": 90.0,
+      "YMax": 60.33,
       "BSList": [
         {
           "BSName": "BS1",
-          "BSLocX": 10,
-          "BSLocY": 10,
+          "BSLocX": 83.2,
+          "BSLocY": 42.8,
           "Status": "ON"
         },
         {
           "BSName": "BS2",
-          "BSLocX": 20,
-          "BSLocY": 10,
+          "BSLocX": 69.3,
+          "BSLocY": 54.7,
           "Status": "ON"
+        },
+        {
+          "BSName": "BS3",
+          "BSLocX": 25.8,
+          "BSLocY": 54.7,
+          "Status": "ON"
+        },
+        {
+          "BSName": "BS4",
+          "BSLocX": 76.6,
+          "BSLocY": 17.0,
+          "Status": "ON"
+        },
+        {
+          "BSName": "BS5",
+          "BSLocX": 55.8,
+          "BSLocY": 49.9,
+          "Status": "OFF"
+        },
+        {
+          "BSName": "BS6",
+          "BSLocX": 39.1,
+          "BSLocY": 36.4,
+          "Status": "OFF"
+        },
+        {
+          "BSName": "BS7",
+          "BSLocX": 44.0,
+          "BSLocY": 7.2,
+          "Status": "OFF"
+        },
+        {
+          "BSName": "BS8",
+          "BSLocX": 7.0,
+          "BSLocY": 38.1,
+          "Status": "OFF"
         }
       ],
       "BSUEList": [
@@ -551,14 +594,9 @@ function fieldJson() {
           "BSName": "BS1",
           "UEList": [
             {
-              "UEName": "UE1",
-              "UELocX": 5,
-              "UELocY": 5
-            },
-            {
-              "UEName": "UE2",
-              "UELocX": 10,
-              "UELocY": 12
+              "UEName": "UE12",
+              "UELocX": 86.4,
+              "UELocY": 42.5
             }
           ]
         },
@@ -566,16 +604,277 @@ function fieldJson() {
           "BSName": "BS2",
           "UEList": [
             {
+              "UEName": "UE2",
+              "UELocX": 59.5,
+              "UELocY": 54.8
+            },
+            {
               "UEName": "UE3",
-              "UELocX": 20,
-              "UELocY": 25
+              "UELocX": 62.7,
+              "UELocY": 54.3
             },
             {
               "UEName": "UE4",
-              "UELocX": 18,
-              "UELocY": 27
+              "UELocX": 66.6,
+              "UELocY": 55.0
+            },
+            {
+              "UEName": "UE5",
+              "UELocX": 47.5,
+              "UELocY": 54.7
+            },
+            {
+              "UEName": "UE14",
+              "UELocX": 61.5,
+              "UELocY": 55.7
+            },
+            {
+              "UEName": "UE15",
+              "UELocX": 48.7,
+              "UELocY": 56.0
+            },
+            {
+              "UEName": "UE16",
+              "UELocX": 64.1,
+              "UELocY": 54.4
+            },
+            {
+              "UEName": "UE19",
+              "UELocX": 52.2,
+              "UELocY": 55.2
+            },
+            {
+              "UEName": "UE21",
+              "UELocX": 71.9,
+              "UELocY": 55.6
+            },
+            {
+              "UEName": "UE22",
+              "UELocX": 72.6,
+              "UELocY": 54.7
+            },
+            {
+              "UEName": "UE23",
+              "UELocX": 65.3,
+              "UELocY": 55.1
+            },
+            {
+              "UEName": "UE29",
+              "UELocX": 40.2,
+              "UELocY": 53.8
+            },
+            {
+              "UEName": "UE38",
+              "UELocX": 42.4,
+              "UELocY": 54.0
+            },
+            {
+              "UEName": "UE41",
+              "UELocX": 44.9,
+              "UELocY": 27.9
+            },
+            {
+              "UEName": "UE42",
+              "UELocX": 81.1,
+              "UELocY": 39.7
+            },
+            {
+              "UEName": "UE47",
+              "UELocX": 50.6,
+              "UELocY": 49.7
+            },
+            {
+              "UEName": "UE48",
+              "UELocX": 42.3,
+              "UELocY": 40.8
+            },
+            {
+              "UEName": "UE49",
+              "UELocX": 48.3,
+              "UELocY": 36.3
             }
           ]
+        },
+        {
+          "BSName": "BS3",
+          "UEList": [
+            {
+              "UEName": "UE6",
+              "UELocX": 27.0,
+              "UELocY": 54.6
+            },
+            {
+              "UEName": "UE7",
+              "UELocX": 32.4,
+              "UELocY": 54.1
+            },
+            {
+              "UEName": "UE8",
+              "UELocX": 18.9,
+              "UELocY": 54.4
+            },
+            {
+              "UEName": "UE17",
+              "UELocX": 20.3,
+              "UELocY": 54.0
+            },
+            {
+              "UEName": "UE18",
+              "UELocX": 38.6,
+              "UELocY": 55.4
+            },
+            {
+              "UEName": "UE20",
+              "UELocX": 19.8,
+              "UELocY": 56.1
+            },
+            {
+              "UEName": "UE24",
+              "UELocX": 23.7,
+              "UELocY": 55.4
+            },
+            {
+              "UEName": "UE25",
+              "UELocX": 23.7,
+              "UELocY": 55.4
+            },
+            {
+              "UEName": "UE26",
+              "UELocX": 28.2,
+              "UELocY": 55.1
+            },
+            {
+              "UEName": "UE27",
+              "UELocX": 33.7,
+              "UELocY": 54.7
+            },
+            {
+              "UEName": "UE28",
+              "UELocX": 15.4,
+              "UELocY": 56.0
+            },
+            {
+              "UEName": "UE33",
+              "UELocX": 20.6,
+              "UELocY": 55.5
+            },
+            {
+              "UEName": "UE39",
+              "UELocX": 17.6,
+              "UELocY": 53.8
+            },
+            {
+              "UEName": "UE40",
+              "UELocX": 23.7,
+              "UELocY": 56.2
+            },
+            {
+              "UEName": "UE43",
+              "UELocX": 35.7,
+              "UELocY": 39.2
+            },
+            {
+              "UEName": "UE44",
+              "UELocX": 17.7,
+              "UELocY": 55.2
+            },
+            {
+              "UEName": "UE45",
+              "UELocX": 24.3,
+              "UELocY": 54.0
+            },
+            {
+              "UEName": "UE46",
+              "UELocX": 31.6,
+              "UELocY": 55.4
+            }
+          ]
+        },
+        {
+          "BSName": "BS4",
+          "UEList": [
+            {
+              "UEName": "UE1",
+              "UELocX": 81.2,
+              "UELocY": 4.7
+            },
+            {
+              "UEName": "UE9",
+              "UELocX": 79.1,
+              "UELocY": 15.3
+            },
+            {
+              "UEName": "UE10",
+              "UELocX": 74.8,
+              "UELocY": 8.3
+            },
+            {
+              "UEName": "UE11",
+              "UELocX": 76.0,
+              "UELocY": 21.6
+            },
+            {
+              "UEName": "UE13",
+              "UELocX": 75.1,
+              "UELocY": 27.9
+            },
+            {
+              "UEName": "UE30",
+              "UELocX": 75.6,
+              "UELocY": 19.7
+            },
+            {
+              "UEName": "UE31",
+              "UELocX": 76.1,
+              "UELocY": 13.3
+            },
+            {
+              "UEName": "UE32",
+              "UELocX": 78.2,
+              "UELocY": 24.5
+            },
+            {
+              "UEName": "UE34",
+              "UELocX": 77.9,
+              "UELocY": 6.0
+            },
+            {
+              "UEName": "UE35",
+              "UELocX": 75.0,
+              "UELocY": 11.9
+            },
+            {
+              "UEName": "UE36",
+              "UELocX": 75.7,
+              "UELocY": 23.3
+            },
+            {
+              "UEName": "UE37",
+              "UELocX": 75.0,
+              "UELocY": 9.8
+            },
+            {
+              "UEName": "UE50",
+              "UELocX": 26.8,
+              "UELocY": 36.4
+            }
+          ]
+        },
+        {
+          "BSName": "BS5",
+          "UEList": []
+        },
+        {
+          "BSName": "BS6",
+          "UEList": []
+        },
+        {
+          "BSName": "BS7",
+          "UEList": []
+        },
+        {
+          "BSName": "BS8",
+          "UEList": []
         }
       ]
     }
@@ -642,43 +941,321 @@ function energyJson() {
   return {
     "Energy": {
       "TimeRange": {
-        "StartHour": 7,
-        "StartMin": 30,
-        "EndHour": 8,
-        "EndMin": 30,
-        "Interval": 1200.0
+        "StartHour": 13,
+        "StartMin": 18,
+        "EndHour": 16,
+        "EndMin": 50,
+        "Interval": 669.4736842105264
       },
       "BSPowerList": [
         {
           "BSName": "BS1",
           "PowerList": [
-            5566.0,
-            4000.0,
-            5000.0
+            162.016,
+            176.506,
+            176.506,
+            160.7,
+            192.88,
+            164.683,
+            172.328,
+            163.634,
+            161.038,
+            160.7,
+            165.892,
+            161.447,
+            183.973,
+            161.038,
+            162.655,
+            161.393,
+            183.973,
+            162.655,
+            174.337,
+            178.835,
+            161.002,
+            170.479,
+            161.393,
+            161.038,
+            161.393,
+            170.479,
+            160.771,
+            161.447,
+            160.789,
+            0.0,
+            161.002,
+            176.506,
+            161.002,
+            161.393
           ]
         },
         {
           "BSName": "BS2",
           "PowerList": [
-            6677.0,
-            5000.0,
-            5000.0
+            174.337,
+            174.337,
+            163.634,
+            161.393,
+            160.7,
+            160.771,
+            167.261,
+            161.393,
+            165.892,
+            160.7,
+            0.0,
+            183.973,
+            163.634,
+            160.7,
+            162.745,
+            186.782,
+            162.745,
+            165.892,
+            183.973,
+            162.655,
+            168.79,
+            162.655,
+            178.835,
+            164.683,
+            0.0,
+            161.393,
+            176.506,
+            162.655,
+            189.751,
+            162.655
+          ]
+        },
+        {
+          "BSName": "BS3",
+          "PowerList": [
+            160.7,
+            183.973,
+            160.7,
+            189.751,
+            167.261,
+            161.393,
+            165.892,
+            163.634,
+            162.745,
+            178.835,
+            161.447,
+            165.892,
+            192.88,
+            160.789,
+            160.7,
+            160.7,
+            160.7,
+            174.337,
+            160.7,
+            160.7,
+            160.7,
+            160.7,
+            160.7,
+            160.7,
+            160.7,
+            196.169,
+            160.7,
+            160.7,
+            160.7,
+            160.7
+          ]
+        },
+        {
+          "BSName": "BS4",
+          "PowerList": [
+            162.745,
+            199.618,
+            170.479,
+            160.7,
+            160.7,
+            160.789,
+            160.7,
+            160.771,
+            160.7,
+            167.261,
+            162.655,
+            160.7,
+            167.261,
+            161.447,
+            160.7,
+            174.337,
+            181.324,
+            160.7,
+            178.835,
+            167.261,
+            172.328,
+            160.789,
+            162.655,
+            181.324,
+            189.751,
+            160.7,
+            161.447,
+            160.789,
+            196.169,
+            162.745
+          ]
+        },
+        {
+          "BSName": "BS5",
+          "PowerList": [
+            174.337,
+            160.7,
+            167.261,
+            161.944,
+            196.169,
+            161.002,
+            161.002,
+            196.169,
+            168.79,
+            186.782,
+            161.393,
+            160.7,
+            162.745,
+            186.782,
+            186.782,
+            174.337,
+            161.002,
+            178.835,
+            174.337,
+            161.038,
+            199.618,
+            192.88,
+            183.973,
+            178.835,
+            163.634,
+            183.973,
+            161.447,
+            160.771,
+            186.782
+          ]
+        },
+        {
+          "BSName": "BS6",
+          "PowerList": [
+            162.745,
+            160.789,
+            161.038,
+            161.393,
+            161.038,
+            0.0,
+            160.7,
+            0.0,
+            186.782,
+            161.038,
+            162.016,
+            174.337,
+            176.506,
+            163.634,
+            161.393,
+            162.016,
+            167.261,
+            162.016,
+            161.393,
+            161.447,
+            161.944,
+            160.7,
+            181.324,
+            196.169,
+            163.634,
+            174.337,
+            178.835,
+            161.038,
+            199.618
+          ]
+        },
+        {
+          "BSName": "BS7",
+          "PowerList": [
+            165.892,
+            181.324,
+            168.79,
+            160.789,
+            196.169,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            167.261,
+            160.771,
+            0.0,
+            196.169,
+            186.782,
+            181.324,
+            181.324,
+            161.447,
+            163.634,
+            160.789,
+            196.169,
+            0.0,
+            161.944,
+            192.88,
+            178.835,
+            163.634,
+            161.447,
+            186.782,
+            176.506,
+            0.0
+          ]
+        },
+        {
+          "BSName": "BS8",
+          "PowerList": [
+            0.0,
+            189.751,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            164.683,
+            0.0,
+            0.0,
+            0.0,
+            170.479,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            161.038,
+            162.655,
+            0.0,
+            0.0,
+            161.944,
+            161.002,
+            0.0,
+            0.0,
+            0.0,
+            162.655
           ]
         }
       ],
       "TotalPowerList": [
-        1234.0,
-        9000.0,
-        10000.0
+        1347.6,
+        1156.14,
+        1181.01,
+        1195.68,
+        1400.63,
+        1183.45,
+        1161.12,
+        1189.39,
+        1148.17,
+        1342.9,
+        1178.84,
+        1178.48,
+        1226.33,
+        1227.02,
+        1170.17,
+        1179.41,
+        1187.71,
+        1205.94,
+        1196.55
       ],
-      "BSPowerMax": 8000.0,
-      "TotalPowerMax": 24000.0,
-      "PowerConsumptionwithoutES": 24000,
-      "TodayEnergyConsumption": 20234.0,
-      "EnergySaving": 3766.0,
-      "EnergySavingRatio": 15.691666666666668
+      "BSPowerMax": 1760.0,
+      "TotalPowerMax": 33440.0,
+      "PowerConsumptionwithoutES": 152000,
+      "TodayEnergyConsumption": 23056.539999999997,
+      "EnergySaving": 128943.46,
+      "EnergySavingRatio": 84.83122368421053
     }
-
   }
 }
 
@@ -686,90 +1263,409 @@ function throughputJson() {
   return {
     "Throughput": {
       "TimeRange": {
-        "StartHour": 7,
-        "StartMin": 30,
-        "EndHour": 8,
-        "EndMin": 30,
-        "Interval": 1200.0
+        "StartHour": 13,
+        "StartMin": 18,
+        "EndHour": 19,
+        "EndMin": 8,
+        "Interval": 1050.0
       },
       "BSThrpList": [
         {
           "BSName": "BS1",
           "ThrpList": [
-            1234.0,
-            1212.0,
-            2367.0
+            500.607,
+            639.492,
+            497.032,
+            772.693,
+            702.703,
+            211.071,
+            0.0,
+            898.086,
+            657.98,
+            751.084,
+            198.66,
+            672.836,
+            351.768,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            862.853,
+            67.5373,
+            206.691,
+            574.598,
+            0.0,
+            336.063,
+            187.963,
+            204.866,
+            627.152,
+            738.119
           ]
         },
         {
           "BSName": "BS2",
           "ThrpList": [
-            2345.0,
-            3456.0,
-            4567.0
+            485.192,
+            147.369,
+            455.647,
+            202.491,
+            209.452,
+            434.813,
+            211.071,
+            793.67,
+            751.198,
+            127.895,
+            0.0,
+            206.691,
+            418.239,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            862.853,
+            67.5373,
+            206.691,
+            0.0,
+            535.977,
+            336.063,
+            187.963,
+            204.866,
+            627.152,
+            738.119
+          ]
+        },
+        {
+          "BSName": "BS3",
+          "ThrpList": [
+            498.177,
+            232.844,
+            508.074,
+            739.668,
+            236.952,
+            629.304,
+            443.879,
+            633.71,
+            211.071,
+            157.237,
+            467.27,
+            555.593,
+            633.618,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            862.853,
+            67.5373,
+            206.691,
+            574.598,
+            535.977,
+            336.063,
+            187.963,
+            204.866,
+            627.152,
+            738.119
+          ]
+        },
+        {
+          "BSName": "BS4",
+          "ThrpList": [
+            374.32,
+            143.899,
+            659.851,
+            96.1285,
+            217.319,
+            685.645,
+            377.439,
+            705.831,
+            577.913,
+            268.731,
+            739.668,
+            0.0,
+            470.423,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            862.853,
+            67.5373,
+            206.691,
+            574.598,
+            535.977,
+            336.063,
+            187.963,
+            204.866,
+            627.152,
+            738.119
+          ]
+        },
+        {
+          "BSName": "BS5",
+          "ThrpList": [
+            157.736,
+            474.51,
+            164.227,
+            755.073,
+            547.729,
+            702.066,
+            730.129,
+            209.976,
+            739.668,
+            418.995,
+            799.963,
+            739.668,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            862.853,
+            67.5373,
+            206.691,
+            574.598,
+            535.977,
+            336.063,
+            187.963,
+            204.866,
+            627.152,
+            0.0
+          ]
+        },
+        {
+          "BSName": "BS6",
+          "ThrpList": [
+            898.086,
+            453.254,
+            633.71,
+            375.834,
+            109.062,
+            0.0,
+            639.706,
+            0.0,
+            502.515,
+            177.841,
+            273.304,
+            211.071,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            862.853,
+            67.5373,
+            206.691,
+            574.598,
+            535.977,
+            336.063,
+            187.963,
+            204.866,
+            627.152,
+            0.0
+          ]
+        },
+        {
+          "BSName": "BS7",
+          "ThrpList": [
+            206.929,
+            634.53,
+            211.071,
+            492.076,
+            282.987,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            209.352,
+            0.0,
+            0.0,
+            562.037,
+            578.668,
+            141.705,
+            633.71,
+            211.071,
+            286.937,
+            898.086,
+            60.9297,
+            0.0,
+            67.5373,
+            206.691,
+            574.598,
+            535.977,
+            336.063,
+            187.963,
+            204.866,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "BSName": "BS8",
+          "ThrpList": [
+            0.0,
+            167.375,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            762.468,
+            0.0,
+            0.0,
+            0.0,
+            141.705,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            60.9297,
+            862.853,
+            0.0,
+            0.0,
+            574.598,
+            535.977,
+            0.0,
+            0.0,
+            0.0,
+            627.152,
+            0.0
           ]
         }
       ],
-      "BSThrpMax": 6000.0,
-      "TotalThrpMax": 18000.0,
+      "BSThrpMax": 12000.0,
+      "TotalThrpMax": 240000.0,
       "TotalThrpList": [
-        3579.0,
-        3668.0,
-        3934.0
+        2873.6,
+        2508.39,
+        3433.44,
+        3066.0,
+        2674.94,
+        3572.91,
+        3009.84,
+        2924.95,
+        3593.15,
+        2985.2,
+        2868.0,
+        2760.75,
+        3534.73,
+        2896.72,
+        2650.61,
+        2998.03,
+        2568.97,
+        2859.47,
+        2941.39,
+        2307.69
       ],
       "BSUEList": [
         {
           "BSName": "BS1",
           "UEList": [
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2",
-            "UE1",
-            "UE2"
+            "UE12"
           ]
         },
         {
           "BSName": "BS2",
           "UEList": [
+            "UE2",
             "UE3",
             "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4",
-            "UE3",
-            "UE4"
+            "UE5",
+            "UE14",
+            "UE15",
+            "UE16",
+            "UE19",
+            "UE21",
+            "UE22",
+            "UE23",
+            "UE29",
+            "UE38",
+            "UE41",
+            "UE42",
+            "UE47",
+            "UE48",
+            "UE49"
           ]
+        },
+        {
+          "BSName": "BS3",
+          "UEList": [
+            "UE6",
+            "UE7",
+            "UE8",
+            "UE17",
+            "UE18",
+            "UE20",
+            "UE24",
+            "UE25",
+            "UE26",
+            "UE27",
+            "UE28",
+            "UE33",
+            "UE39",
+            "UE40",
+            "UE43",
+            "UE44",
+            "UE45",
+            "UE46"
+          ]
+        },
+        {
+          "BSName": "BS4",
+          "UEList": [
+            "UE1",
+            "UE9",
+            "UE10",
+            "UE11",
+            "UE13",
+            "UE30",
+            "UE31",
+            "UE32",
+            "UE34",
+            "UE35",
+            "UE36",
+            "UE37",
+            "UE50"
+          ]
+        },
+        {
+          "BSName": "BS5",
+          "UEList": []
+        },
+        {
+          "BSName": "BS6",
+          "UEList": []
+        },
+        {
+          "BSName": "BS7",
+          "UEList": []
+        },
+        {
+          "BSName": "BS8",
+          "UEList": []
         }
       ]
     }
-
   }
 }
