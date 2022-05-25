@@ -56,21 +56,23 @@
   </span>
 
 
-<span class="Taffic">
-  <h2>Taffic Load</h2>
-  <span>
-    <p-chart type="line" [data]="throughputData" [options]="throughputOptions" width="100%" height="22vh"></p-chart>
-  </span>
-  <span>
-    <div id="arquee">
-        <div class="thead">
-          <span *ngFor="let list of throughputUEsOfLable" [style.color]="list.color">{{list.column}}</span>
-        </div>
-        <div id="marquee">
-          <div *ngFor="let list of throughputTDList">
-            <span *ngFor="let opt of list" [style.color]="opt.color">{{opt.label}}</span>
+  <span class="Taffic">
+    <h2>Taffic Load</h2>
+    <span>
+      <p-chart type="line" [data]="throughputData" [options]="throughputOptions" width="100%" height="22vh"></p-chart>
+    </span>
+    <span>
+      <div id="arquee">
+          <div class="thead">
+            <span *ngFor="let list of throughputUEsOfLable" [style.color]="list.color">{{list.column}}</span>
           </div>
-        </div>
-    </div>
+          <div id="marquee">
+            <div *ngFor="let list of throughputTDList">
+              <span *ngFor="let opt of list" [style.color]="opt.color">{{opt.label}}</span>
+            </div>
+          </div>
+      </div>
+    </span>
   </span>
+</div>
 

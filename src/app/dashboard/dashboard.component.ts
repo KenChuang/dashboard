@@ -80,9 +80,11 @@ export class DashboardComponent implements OnInit {
   BSNameMapColor: Map<string, string> = new Map();
   marquee_setInterval: any;
 
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.resizeFieldArea();
+    this.resizeThroughArea();
   }
 
   constructor(private http: HttpClient) {
@@ -122,51 +124,51 @@ export class DashboardComponent implements OnInit {
   }
 
   getField() {
-    // const url = 'http://211.20.94.210:8080/field';
-    // this.http.get(url).subscribe(
-    //   res => {
-    //     console.log('getField:');
-    //     console.log(res);
-    //     this.fieldJson = res;
-    //     this.fieldDataSetting();
-    //   }
-    // );
+    const url = 'http://211.20.94.210:8080/field';
+    this.http.get(url).subscribe(
+      res => {
+        console.log('getField:');
+        console.log(res);
+        this.fieldJson = res;
+        this.fieldDataSetting();
+      }
+    );
 
     /* local file test */
-    this.fieldJson = fieldJson();
-    this.fieldDataSetting();
+    // this.fieldJson = fieldJson();
+    // this.fieldDataSetting();
   }
 
   getEnergyJson() {
-    // const url = 'http://211.20.94.210:8080/energy';
-    // this.http.get(url).subscribe(
-    //   res => {
-    //     console.log('getEnergyJson:');
-    //     console.log(res);
-    //     this.energyJson = res;
-    //     this.energyDataSetting();
-    //   }
-    // );
+    const url = 'http://211.20.94.210:8080/energy';
+    this.http.get(url).subscribe(
+      res => {
+        console.log('getEnergyJson:');
+        console.log(res);
+        this.energyJson = res;
+        this.energyDataSetting();
+      }
+    );
 
     /* local file test */
-    this.energyJson = energyJson();
-    this.energyDataSetting();
+    // this.energyJson = energyJson();
+    // this.energyDataSetting();
   }
 
   getThroughputJson() {
-    // const url = 'http://211.20.94.210:8080/throughput';
-    // this.http.get(url).subscribe(
-    //   res => {
-    //     console.log('getThroughputJson:');
-    //     console.log(res);
-    //     this.throughputJson = res;
-    //     this.throughputDataSetting();
-    //   }
-    // );
+    const url = 'http://211.20.94.210:8080/throughput';
+    this.http.get(url).subscribe(
+      res => {
+        console.log('getThroughputJson:');
+        console.log(res);
+        this.throughputJson = res;
+        this.throughputDataSetting();
+      }
+    );
 
     /* local file test */
-    this.throughputJson = throughputJson();
-    this.throughputDataSetting();
+    // this.throughputJson = throughputJson();
+    // this.throughputDataSetting();
   }
 
   fieldDataSetting() {
@@ -198,20 +200,22 @@ export class DashboardComponent implements OnInit {
 
   // Auto Resize Field
   resizeFieldArea() {
-    const fieldWidth = (document.getElementsByClassName('map')[0] as any).offsetWidth;
-    const fieldHeight = (document.getElementsByClassName('map')[0] as any).offsetHeight;
-    const _w = fieldWidth / this.fieldJson.Field.XMax;
-    const _h = fieldHeight / this.fieldJson.Field.YMax;
-    this.BSList.forEach((row: FieldBS) => {
-      row['BSLocX'] = row.orgBSLocX * _w;
-      row['BSLocY'] = row.orgBSLocY * _h;
-    });
-    this.BSUEList.forEach((row: any) => {
-      row.UEList.forEach((child: any) => {
-        child['BSLocX'] = child['orgBSLocX'] * _w;
-        child['BSLocY'] = child['orgBSLocY'] * _h;
-        child['UELocX'] = child['orgUELocX'] * _w;
-        child['UELocY'] = child['orgUELocY'] * _h;
+    window.setTimeout(() => {
+      const fieldWidth = (document.getElementsByClassName('map')[0] as any).offsetWidth;
+      const fieldHeight = (document.getElementsByClassName('map')[0] as any).offsetHeight;
+      const _w = fieldWidth / this.fieldJson.Field.XMax;
+      const _h = fieldHeight / this.fieldJson.Field.YMax;
+      this.BSList.forEach((row: FieldBS) => {
+        row['BSLocX'] = row.orgBSLocX * _w;
+        row['BSLocY'] = row.orgBSLocY * _h;
+      });
+      this.BSUEList.forEach((row: any) => {
+        row.UEList.forEach((child: any) => {
+          child['BSLocX'] = child['orgBSLocX'] * _w;
+          child['BSLocY'] = child['orgBSLocY'] * _h;
+          child['UELocX'] = child['orgUELocX'] * _w;
+          child['UELocY'] = child['orgUELocY'] * _h;
+        });
       });
     });
   }
@@ -367,7 +371,24 @@ export class DashboardComponent implements OnInit {
       });
     });
     this.slideBox();
-    console.log(this.throughputTDList);
+    this.resizeThroughArea();
+  }
+
+  // Auto Resize Through
+  resizeThroughArea() {
+    // window.setTimeout(() => {
+    //   const theadWidth = (document.getElementsByClassName('thead') as any)[0].offsetWidth - 2;
+    //   const size = theadWidth / this.throughputUEsOfLable.length;
+    //   const thElements = document.querySelectorAll('.thead > span');
+    //   const tdElements = document.querySelectorAll('#marquee > div > span');
+    //   console.log(tdElements)
+    //   thElements.forEach((el: any) => {
+    //     el.style.width = size + 'px';
+    //   });
+    //   tdElements.forEach((el: any) => {
+    //     el.style.width = size + 'px';
+    //   });
+    // });
   }
 
   // 跑馬燈
