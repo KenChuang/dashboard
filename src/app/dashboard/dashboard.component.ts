@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.initData();
-    // this.startTimer();
+    this.startTimer();
   }
 
   // 計時器
