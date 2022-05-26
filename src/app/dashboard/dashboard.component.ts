@@ -23,6 +23,8 @@ interface UE {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  /* local file */
+  isLocal = false;
 
   fieldJson: any;
 
@@ -80,7 +82,6 @@ export class DashboardComponent implements OnInit {
   BSNameMapColor: Map<string, string> = new Map();
   marquee_setInterval: any;
 
-
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.resizeFieldArea();
@@ -124,51 +125,58 @@ export class DashboardComponent implements OnInit {
   }
 
   getField() {
-    const url = 'http://211.20.94.210:8080/field';
-    this.http.get(url).subscribe(
-      res => {
-        console.log('getField:');
-        console.log(res);
-        this.fieldJson = res;
-        this.fieldDataSetting();
-      }
-    );
-
-    /* local file test */
-    // this.fieldJson = fieldJson();
-    // this.fieldDataSetting();
+    if (this.isLocal) {
+      /* local file test */
+      this.fieldJson = fieldJson();
+      this.fieldDataSetting();
+    } else {
+      const url = 'http://211.20.94.210:8080/field';
+      this.http.get(url).subscribe(
+        res => {
+          console.log('getField:');
+          console.log(res);
+          this.fieldJson = res;
+          this.fieldDataSetting();
+        }
+      );
+    }
   }
 
   getEnergyJson() {
-    const url = 'http://211.20.94.210:8080/energy';
-    this.http.get(url).subscribe(
-      res => {
-        console.log('getEnergyJson:');
-        console.log(res);
-        this.energyJson = res;
-        this.energyDataSetting();
-      }
-    );
-
-    /* local file test */
-    // this.energyJson = energyJson();
-    // this.energyDataSetting();
+    if (this.isLocal) {
+      /* local file test */
+      this.energyJson = energyJson();
+      this.energyDataSetting();
+    } else {
+      const url = 'http://211.20.94.210:8080/energy';
+      this.http.get(url).subscribe(
+        res => {
+          console.log('getEnergyJson:');
+          console.log(res);
+          this.energyJson = res;
+          this.energyDataSetting();
+        }
+      );
+    }
   }
 
   getThroughputJson() {
-    const url = 'http://211.20.94.210:8080/throughput';
-    this.http.get(url).subscribe(
-      res => {
-        console.log('getThroughputJson:');
-        console.log(res);
-        this.throughputJson = res;
-        this.throughputDataSetting();
-      }
-    );
+    if (this.isLocal) {
+      /* local file test */
+      this.throughputJson = throughputJson();
+      this.throughputDataSetting();
+    } else {
+      const url = 'http://211.20.94.210:8080/throughput';
+      this.http.get(url).subscribe(
+        res => {
+          console.log('getThroughputJson:');
+          console.log(res);
+          this.throughputJson = res;
+          this.throughputDataSetting();
+        }
+      );
 
-    /* local file test */
-    // this.throughputJson = throughputJson();
-    // this.throughputDataSetting();
+    }
   }
 
   fieldDataSetting() {
@@ -376,19 +384,18 @@ export class DashboardComponent implements OnInit {
 
   // Auto Resize Through
   resizeThroughArea() {
-    // window.setTimeout(() => {
-    //   const theadWidth = (document.getElementsByClassName('thead') as any)[0].offsetWidth - 2;
-    //   const size = theadWidth / this.throughputUEsOfLable.length;
-    //   const thElements = document.querySelectorAll('.thead > span');
-    //   const tdElements = document.querySelectorAll('#marquee > div > span');
-    //   console.log(tdElements)
-    //   thElements.forEach((el: any) => {
-    //     el.style.width = size + 'px';
-    //   });
-    //   tdElements.forEach((el: any) => {
-    //     el.style.width = size + 'px';
-    //   });
-    // });
+    window.setTimeout(() => {
+      const theadWidth = (document.getElementsByClassName('thead') as any)[0].offsetWidth - 2;
+      const size = theadWidth / this.throughputUEsOfLable.length;
+      const thElements = document.querySelectorAll('.thead > span');
+      const tdElements = document.querySelectorAll('#marquee > div > span');
+      thElements.forEach((el: any) => {
+        el.style.width = size + 'px';
+      });
+      tdElements.forEach((el: any) => {
+        el.style.width = size + 'px';
+      });
+    });
   }
 
   // 跑馬燈
