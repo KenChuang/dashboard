@@ -385,7 +385,7 @@ export class DashboardComponent implements OnInit {
   // Auto Resize Through
   resizeThroughArea() {
     window.setTimeout(() => {
-      const theadWidth = (document.getElementsByClassName('thead') as any)[0].offsetWidth - 2;
+      const theadWidth = (document.getElementsByClassName('thead') as any)[0].offsetWidth - 20;
       const size = theadWidth / this.throughputUEsOfLable.length;
       const thElements = document.querySelectorAll('.thead > span');
       const tdElements = document.querySelectorAll('#marquee > div > span');
