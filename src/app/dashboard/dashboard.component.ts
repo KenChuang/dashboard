@@ -184,7 +184,11 @@ export class DashboardComponent implements OnInit {
     this.BSList = this.fieldJson.Field.BSList;
     this.BSUEList = this.fieldJson.Field.BSUEList;
     this.BSList.forEach((row, idx: number) => {
-      row.imgUrl = `assets/img/${this.filedImgs[idx]}.svg`;
+      if (row['Status'] === 'ON') {
+        row.imgUrl = `assets/img/${this.filedImgs[idx]}.svg`;
+      } else {
+        row.imgUrl = `assets/img/powerOff.svg`;
+      }
       row['orgBSLocX'] = _.cloneDeep(row.BSLocX);
       row['orgBSLocY'] = _.cloneDeep(row.BSLocY);
       this.BSnameMapFieldBS.set(row.BSName, row)
